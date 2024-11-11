@@ -1,0 +1,141 @@
+/* Body Background */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #0d0d0d, #1f1f1f);
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* Chat Container */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 600px;
+  height: 80vh;
+  background-color: #1c1c1e;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Header */
+.chat-header {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  padding: 15px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Chat Messages Area */
+.msger-chat {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: #1c1c1e;
+}
+
+/* Messages Styling */
+.msg {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.msg.left-msg {
+  background-color: #3c3c3e;
+  color: white;
+}
+
+.msg.right-msg {
+  align-self: flex-end;
+  background-color: #2f82f8;
+  color: white;
+}
+
+.msg-bubble {
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 80%;
+  position: relative;
+}
+
+.left-msg .msg-bubble {
+  background: linear-gradient(135deg, #8e2de2, #4a00e0);
+  color: #e5e5e7;
+}
+
+.right-msg .msg-bubble {
+  background: linear-gradient(135deg, #4a90e2, #4a68e2);
+  color: #fff;
+}
+
+.msg-info {
+  font-size: 0.75rem;
+  color: #bbb;
+  margin-bottom: 5px;
+}
+
+/* Input Area */
+.msger-inputarea {
+  display: flex;
+  padding: 10px;
+  background: #2a2a2c;
+  border-top: 1px solid #444;
+}
+
+.msger-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  margin-right: 10px;
+  outline: none;
+}
+
+.msger-input::placeholder {
+  color: #888;
+}
+
+.msger-send-btn {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background: #ff416c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.msger-send-btn:hover {
+  background: #ff4b2b;
+}
+
+/* Scrollbar styling */
+.msger-chat::-webkit-scrollbar {
+  width: 8px;
+}
+
+.msger-chat::-webkit-scrollbar-track {
+  background: #1c1c1e;
+}
+
+.msger-chat::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}

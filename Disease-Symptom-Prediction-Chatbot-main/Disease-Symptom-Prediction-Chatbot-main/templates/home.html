@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CareAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <style>
+    /* Dark gradient background for body */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2b2b2d, #1a1a1d);
+      color: #fff;
+    }
+
+    /* Chat container styling */
+    .msger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 90%;
+      max-width: 600px;
+      height: 80vh;
+      background: #333;
+      border-radius: 15px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    /* Header with gradient for aesthetic appeal */
+    .msger-header {
+      background: linear-gradient(45deg, #8e44ad, #3498db);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Chat area styling */
+    .msger-chat {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #222;
+    }
+
+    .msg {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 15px;
+    }
+
+    /* Left message styling (CareAI) */
+    .msg.left-msg {
+      justify-content: flex-start;
+    }
+
+    /* Right message styling (User) */
+    .msg.right-msg {
+      justify-content: flex-end;
+    }
+
+    /* Profile image styling */
+    .msg-img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      background-size: cover;
+      border-radius: 50%;
+      background-color: #ddd;
+    }
+
+    /* Message bubble styling */
+    .msg-bubble {
+      max-width: 60%;
+      padding: 15px;
+      border-radius: 15px;
+      position: relative;
+      font-size: 0.9rem;
+      color: white;
+    }
+
+    /* CareAI message bubble color */
+    .msg.left-msg .msg-bubble {
+      background-color: #8e44ad;
+      color: #fff;
+    }
+
+    /* User message bubble color */
+    .msg.right-msg .msg-bubble {
+      background-color: #3498db;
+      color: #fff;
+    }
+
+    /* Input area styling */
+    .msger-inputarea {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #444;
+      background-color: #333;
+    }
+
+    .msger-input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: #fff;
+      outline: none;
+    }
+
+    .msger-input::placeholder {
+      color: #bbb;
+    }
+
+    /* Date picker icon styling */
+    .date-picker-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    .date-picker {
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: #fff;
+      outline: none;
+    }
+
+    .date-picker::placeholder {
+      color: #bbb;
+    }
+
+    .calendar-icon {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+      color: #bbb;
+    }
+
+    .msger-send-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .msger-send-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* Scrollbar styling */
+    .msger-chat::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .msger-chat::-webkit-scrollbar-track {
+      background: #333;
+    }
+
+    .msger-chat::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="msger">
+    <header class="msger-header">
+      CareAI
+    </header>
+
+    <main class="msger-chat">
+      <!-- Chat messages here -->
+    </main>
+
+    <form class="msger-inputarea">
+      <div class="date-picker-container">
+        <input type="date" class="date-picker" id="datePicker" placeholder="Select date">
+        <i class="calendar-icon">&#128197;</i> <!-- Unicode for calendar icon -->
+      </div>
+      <input type="text" class="msger-input" id="textInput" placeholder="Enter your message...">
+      <button type="submit" class="msger-send-btn">Send</button>
+    </form>
+  </section>
+
+  <script>
+    const msgerForm = document.querySelector(".msger-inputarea");
+    const msgerInput = document.querySelector(".msger-input");
+    const msgerChat = document.querySelector(".msger-chat");
+
+    const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+    const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+    const BOT_NAME = "CareAI";
+    const PERSON_NAME = "You";
+
+    function loadInitialBotMessages() {
+      const messages = [
+        "Hello, my name is CareAI, and I will be happy to help diagnose your disease.",
+        "To start, we need to ask some basic questions, tap OK to continue!"
+      ];
+      messages.forEach(message => appendMessage(BOT_NAME, BOT_IMG, "left", message));
+    }
+
+    msgerForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const msgText = msgerInput.value;
+      const appointmentDate = document.getElementById("datePicker").value;
+
+      if (!msgText && !appointmentDate) return;
+
+      let message = msgText;
+      if (appointmentDate) message += ` (Appointment Date: ${appointmentDate})`;
+
+      appendMessage(PERSON_NAME, PERSON_IMG, "right", message);
+      msgerInput.value = "";
+      document.getElementById("datePicker").value = ""; // Reset date picker
+      botResponse(message);
+    });
+
+    function appendMessage(name, img, side, text) {
+      const msgHTML = `
+        <div class="msg ${side}-msg">
+          <div class="msg-img" style="background-image: url(${img})"></div>
+          <div class="msg-bubble">
+            <div class="msg-info">
+              <div class="msg-info-name">${name}</div>
+              <div class="msg-text">${text}</div>
+            </div>
+          </div>
+        </div>`;
+      msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+      msgerChat.scrollTop += 500;
+    }
+
+    function botResponse(rawText) {
+      $.get("/get", { msg: rawText }).done(function (data) {
+        appendMessage(BOT_NAME, BOT_IMG, "left", data);
+      });
+    }
+
+    // Load initial messages on page load
+    loadInitialBotMessages();
+  </script>
+</body>
+
+</html>
